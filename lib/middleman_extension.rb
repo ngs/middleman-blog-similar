@@ -1,0 +1,2 @@
+require 'middleman-blog-similar'
+
