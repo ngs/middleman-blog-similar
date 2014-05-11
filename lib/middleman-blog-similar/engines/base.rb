@@ -17,6 +17,9 @@ module Middleman
           def distance a
             0
           end
+          def words
+            article.untagged_body.split %r{[\s\n,\.]}
+          end
           def articles
             article.blog_controller.data.articles
           end
