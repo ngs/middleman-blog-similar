@@ -1,10 +1,10 @@
 module Middleman
   module Blog
     module Similar
-      module BlogArticleExtensions
+      module Helpers
         def similar_articles
-          if engine = app.similarity_engine
-            engine.new(self).similar_articles
+          if is_blog_article?
+            current_article.similar_articles
           else
             []
           end

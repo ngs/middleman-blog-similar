@@ -1,12 +1,12 @@
-require 'levenshtein'
+require 'damerau-levenshtein'
 
 module Middleman
   module Blog
     module Similar
       module Engines
-        module Levenshtein
-          def distance(string1, string2)
-            Levenshtein.distance string1, string2
+        class DamerauLevenshtein < Base
+          def distance(a)
+            ::DamerauLevenshtein.distance article.body, a.body
           end
         end
       end

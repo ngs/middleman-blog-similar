@@ -12,4 +12,3 @@ end
 require "middleman-core"
 require "middleman-blog"
 require "middleman-core/step_definitions"
-
