@@ -39,6 +39,9 @@ gem 'levenshtein-ffi', :require => 'levenshtein'
 #
 # damerau levenshtein:
 #   gem 'damerau-levenshtein'
+#
+# tf-idf or bm25:
+#   gem 'tf-idf-similarity'
 ```
 
 ### `config.rb`
@@ -49,9 +52,15 @@ activate :similar # , :engine => :levenshtein by default.
 
 # Damerau–Levenshtein distance function:
 activate :similar, :engine => :damerau_levenshtein
+
+# Term Frequency-Inverse Document Frequency function:
+activate :similar, :engine => :tf_idf
+
+# Okapi BM25 ranking function:
+activate :similar, :engine => :bm25
 ```
 
-This library supports [levenshtein-ffi], [levenshtein] and [damerau-levenshtein].
+This library supports [levenshtein-ffi], [levenshtein], [tf-idf-similarity] and [damerau-levenshtein].
 
 ## Custom engine
 
@@ -103,3 +112,4 @@ Copyright (c) 2014 [Atsushi Nagase]. MIT Licensed, see [LICENSE] for details.
 [levenshtein-ffi]: https://github.com/dbalatero/levenshtein-ffi
 [levenshtein]: https://github.com/schuyler/levenshtein
 [damerau-levenshtein]: https://github.com/GlobalNamesArchitecture/damerau-levenshtein
+[tf-idf-similarity]: https://github.com/opennorth/tf-idf-similarity
