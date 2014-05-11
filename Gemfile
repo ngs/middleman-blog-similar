@@ -30,7 +30,7 @@ gem 'levenshtein-ffi', :require => 'levenshtein'
 gem 'levenshtein'
 gem 'damerau-levenshtein'
 # gem 'gsl'
-# gem 'tf-idf-similarity'
+gem 'tf-idf-similarity'
 
 if RUBY_VERSION >= '1.9.3'
   gem "codeclimate-test-reporter", :group => :test, :require => nil
