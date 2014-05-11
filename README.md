@@ -5,12 +5,12 @@ Middleman-Blog-Similar
 
 ### Usage
 
-`Middleman::Blog::BlogArticle#similar( limit = 5 )` returns an array of `Middleman::Blog::BlogArticle` instances.
+`Middleman::Blog::BlogArticle#similar_articles` returns an array of `Middleman::Blog::BlogArticle` instances.
 
 ```slim
 h2 Similar Entries
 ul
-  - current_article.similar_articles.each do|article|
+  - current_article.similar_articles.first(5).each do|article|
     li= link_to article.title, article.url
 ```
 
@@ -19,7 +19,7 @@ ul
 ```slim
 h2 Similar Entries
 ul
-  - similar_articles(10).each do|article|
+  - similar_articles.first(5).each do|article|
     li= link_to article.title, article.url
 ```
 
@@ -30,21 +30,24 @@ Configuration
 
 ```ruby
 gem 'middleman-blog-similar'
-gem 'levenshtein-ffi', :require => 'levenshtein' # recommended
+gem 'levenshtein-ffi', :require => 'levenshtein'
 #
-# or if you prefer:
+# or if you prefer other engine:
 #
+# levenshtein without ffi:
 #   gem 'levenshtein'
+#
+# damerau levenshtein:
 #   gem 'damerau-levenshtein'
 ```
 
 ### `config.rb`
 
 ```ruby
-# incase of levenshtein-ffi or levenshtein
+# Levenshtein distance function:
 activate :similar # , :engine => :levenshtein by default.
 
-# or if you prefer damerau levenshtein
+# Damerau–Levenshtein distance function:
 activate :similar, :engine => :damerau_levenshtein
 ```
 
@@ -59,8 +62,8 @@ module Middleman
   module Blog
     module Similar
       module Engines
-        module MyFastDistance
-          def distance(string1, string2)
+        class MyFastDistance < Base
+          def similar_articles(articles)
             # Do stuff and return scores
           end
         end

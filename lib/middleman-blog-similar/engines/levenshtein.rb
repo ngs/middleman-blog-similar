@@ -4,9 +4,9 @@ module Middleman
   module Blog
     module Similar
       module Engines
-        module DamerauLevenshtein
-          def distance(string1, string2)
-            DamerauLevenshtein.distance string1, string2
+        class Levenshtein < Base
+          def distance(a)
+            ::Levenshtein.distance(article.body, a.body)
           end
         end
       end

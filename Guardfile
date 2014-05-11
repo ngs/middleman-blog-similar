@@ -6,7 +6,7 @@ end
 
 guard 'rspec' do
   watch(%r{^spec/.*\.rb$})
-  watch(%r{^lib/.*\.rb$}) { 'spec' }
+  watch(%r{^lib/(.+)\.rb$}) {|m| ["spec/#{m[1]}_spec.rb"] + Dir["spec/#{m[1]}/*_spec.rb"] }
 end
 
 guard 'cucumber' do
