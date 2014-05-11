@@ -3,11 +3,10 @@ module Middleman
     module Similar
       module BlogArticleExtensions
         def similar_articles
-          if engine = app.similarity_engine
-            engine.new(self).similar_articles
-          else
-            []
+          if !@similar_articles && (engine = app.similarity_engine)
+            @similar_articles = engine.new(self).similar_articles
           end
+          @similar_articles || []
         end
       end
     end
