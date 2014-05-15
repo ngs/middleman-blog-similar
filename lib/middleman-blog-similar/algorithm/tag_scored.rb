@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 require 'sqlite3'
 
 # logic ported from https://plugins.trac.wordpress.org/browser/wordpress-23-related-posts-plugin/trunk/recommendations.php
