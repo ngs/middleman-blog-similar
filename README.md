@@ -32,7 +32,7 @@ Configuration
 gem 'middleman-blog-similar'
 gem 'levenshtein-ffi', :require => 'levenshtein'
 #
-# or if you prefer other engine:
+# or if you prefer other algorithm:
 #
 # levenshtein without ffi:
 #   gem 'levenshtein'
@@ -45,24 +45,24 @@ gem 'levenshtein-ffi', :require => 'levenshtein'
 
 ```ruby
 # Levenshtein distance function:
-activate :similar # , :engine => :levenshtein by default.
+activate :similar # , :algorithm => :levenshtein by default.
 
 # Damerau–Levenshtein distance function:
-activate :similar, :engine => :damerau_levenshtein
+activate :similar, :algorithm => :damerau_levenshtein
 ```
 
 This library supports [levenshtein-ffi], [levenshtein] and [damerau-levenshtein].
 
-## Custom engine
+## Custom algorithm
 
-You can use custom engine with implementing modules like this:
+You can use custom algorithm with implementing modules like this:
 
 ```ruby
 module Middleman
   module Blog
     module Similar
-      module Engines
-        class MyFastDistance < Base
+      module Algorithm
+        class MyFastDistance < Algorithm
           def similar_articles(articles)
             # Do stuff and return scores
           end
@@ -76,7 +76,7 @@ end
 then in your `config.rb`
 
 ```ruby
-activate :similar, :engine => :my_fast_distance
+activate :similar, :algorithm => :my_fast_distance
 ```
 
 Build & Dependency Status

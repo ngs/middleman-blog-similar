@@ -21,6 +21,7 @@ gem 'guard-rspec'
 gem 'guard-spork'
 gem 'slim'
 gem 'redcarpet'
+gem 'sqlite3'
 
 # Code Quality
 gem 'cane', :platforms => [:mri_19, :mri_20], :require => false
@@ -32,6 +33,10 @@ gem 'damerau-levenshtein'
 # gem 'gsl'
 # gem 'tf-idf-similarity'
 
+
+gem 'engtagger'
+gem 'okura'
+gem 'treetagger-ruby'
 if RUBY_VERSION >= '1.9.3'
   gem "codeclimate-test-reporter", :group => :test, :require => nil
 end

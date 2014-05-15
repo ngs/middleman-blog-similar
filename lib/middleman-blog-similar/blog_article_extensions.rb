@@ -3,22 +3,22 @@ module Middleman
     module Similar
       module BlogArticleExtensions
         def similar_articles
-          if !@similar_articles && similarity_engine
-            @similar_articles = similarity_engine.similar_articles
+          if !@similar_articles && similarity_algorithm
+            @similar_articles = similarity_algorithm.similar_articles
           end
           @similar_articles || []
         end
         def words
-          unless @words && similarity_engine
-            @words = similarity_engine.words
+          unless @words && similarity_algorithm
+            @words = similarity_algorithm.words
           end
           @words
         end
-        def similarity_engine
-          unless @similarity_engine && (engine = app.similarity_engine)
-            @similarity_engine = engine.new self
+        def similarity_algorithm
+          if !@similarity_algorithm && (algorithm = app.similarity_algorithm)
+            @similarity_algorithm = algorithm.new self
           end
-          @similarity_engine
+          @similarity_algorithm
         end
         def untagged_body
           body.gsub(/<[^>]*>/ui,'')
