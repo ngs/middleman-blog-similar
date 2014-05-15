@@ -16,8 +16,11 @@ module Middleman
         algorithm = options[:algorithm].to_s
         begin
           require "middleman-blog-similar/algorithm/#{algorithm}"
-          algorithm = ::Middleman::Blog::Similar::Algorithm.const_get algorithm.split('/').map(&:camelize).join('::')
-          app.set :similarity_algorithm, algorithm
+          ns = ::Middleman::Blog::Similar::Algorithm
+          algorithm.split('/').each do|n|
+            ns = ns.const_get n.camelize
+          end
+          app.set :similarity_algorithm, ns
         rescue LoadError => e
           app.logger.error "Requested similar algorithm '#{algorithm}' not found."
           raise e
