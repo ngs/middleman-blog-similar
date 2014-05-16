@@ -15,6 +15,7 @@ module SpecHelpers
     fixture_dir = File.expand_path("../../fixtures", __FILE__)
     fixture_tmp = File.join tmp_dir, "rspec"
     root_dir    = File.join fixture_tmp, fixture_path
+    FileUtils::rmtree fixture_tmp
     FileUtils::mkdir_p tmp_dir
     FileUtils::cp_r fixture_dir, fixture_tmp
     ENV["MM_SOURCE"] = 'source'

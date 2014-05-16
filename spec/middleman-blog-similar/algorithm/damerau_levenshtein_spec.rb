@@ -25,8 +25,8 @@ describe 'Middleman::Blog::Similar::Algorithm::DamerauLevenshtein' do
           "/2014/05/13/article5.html",
           "/2014/05/09/article1.html",
           "/2014/05/12/article4.html",
-          "/2014/05/10/article2.html",
           "/2014/05/14/article6.html",
+          "/2014/05/10/article2.html",
           "/2014/05/11/article3.html"
         ]
       }
