@@ -8,7 +8,13 @@ rvm:
 matrix:
   allow_failures:
     - rvm: jruby-19mode
-
+before_install:
+   - sudo apt-get -yV install naist-jdic-utf8
+   - sudo apt-get -yV install mecab
+   - sudo apt-get -yV install mecab-utils
+   - sudo apt-get -yV install mecab-naist-jdic
+   - sudo apt-get -yV install libmecab-dev
+   - sudo apt-get -yV install libmecab-ruby
 script: "bundle exec rake test"
 
 env: TEST=true
