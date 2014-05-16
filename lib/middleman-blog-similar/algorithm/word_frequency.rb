@@ -9,9 +9,8 @@ module Middleman
   module Blog
     module Similar
       class Algorithm
-        class TagScored < Algorithm
+        class WordFrequency < Algorithm
           @@unigrams = nil
-          @@tab_cache_db = nil
           class << self
             def unigrams_path
               File.join File.dirname(__FILE__), 'unigrams.csv'
@@ -24,15 +23,6 @@ module Middleman
                 end
               end
               @@unigrams
-            end
-            def tag_cache_db
-              if @@tag_cache_db.nil?
-                File.unlink tag_cache_path if File.exists? tag_cache_path
-              end
-              @@tag_cache_db
-            end
-            def tag_cache_path
-              app.tag_cache_path || File.join(app.root, 'data/tag.db')
             end
           end
           def distance a
@@ -79,7 +69,6 @@ module Middleman
           end
           def tag_weight   ; 5                      ; end
           def unigrams     ; self.class.unigrams    ; end
-          def tag_cache_db ; self.class.tag_cache_db; end
         end
       end
     end

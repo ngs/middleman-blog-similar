@@ -1,5 +1,5 @@
 require 'spec_helper'
-require 'middleman-blog-similar/algorithm/tag_scored'
+require 'middleman-blog-similar/algorithm/word_frequency'
 
 describe 'Middleman::Blog::Similar::Algorithm' do
   let(:app)     {
@@ -12,7 +12,7 @@ describe 'Middleman::Blog::Similar::Algorithm' do
   describe(:app) {
     describe(:similarity_algorithm) {
       subject { app.similarity_algorithm }
-      it { should be ::Middleman::Blog::Similar::Algorithm::TagScored  }
+      it { should be ::Middleman::Blog::Similar::Algorithm::WordFrequency  }
     }
   }
   describe(:similarity_algorithm) {
@@ -34,7 +34,7 @@ describe 'Middleman::Blog::Similar::Algorithm' do
   describe(:article) {
     describe(:similarity_algorithm) {
       subject { algorithm }
-      it { should be_a_kind_of ::Middleman::Blog::Similar::Algorithm::TagScored  }
+      it { should be_a_kind_of ::Middleman::Blog::Similar::Algorithm::WordFrequency  }
     }
   }
 end

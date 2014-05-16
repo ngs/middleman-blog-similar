@@ -6,7 +6,7 @@ module Middleman
   module Blog
     class SimilarExtension < ::Middleman::Extension
 
-      option :algorithm, :tag_scored, 'Similar lookup algorithm'
+      option :algorithm, :word_frequency, 'Similar lookup algorithm'
 
       self.defined_helpers = [ Middleman::Blog::Similar::Helpers ]
 

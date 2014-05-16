@@ -4,9 +4,9 @@ module Middleman
   module Blog
     module Similar
       class Algorithm
-        class TagScored < Algorithm
-          class TreeTagger < TagScored
-            def auto_tags
+        class WordFrequency < Algorithm
+          class TreeTagger < WordFrequency
+            def words
               require 'treetagger-ruby'
               tagger = TreeTagger::Tagger.new
               tagger.process body

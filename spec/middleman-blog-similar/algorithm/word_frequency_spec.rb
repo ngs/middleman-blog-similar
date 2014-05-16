@@ -1,10 +1,10 @@
 require 'spec_helper'
-require 'middleman-blog-similar/algorithm/tag_scored'
+require 'middleman-blog-similar/algorithm/word_frequency'
 
-describe 'Middleman::Blog::Similar::Algorithm::TagScored' do
+describe 'Middleman::Blog::Similar::Algorithm::WordFrequency' do
   let(:app)     {
     middleman_app('test-app') {
-      activate :similar, :algorithm => :tag_scored
+      activate :similar, :algorithm => :word_frequency
     }
   }
   let(:article) { app.sitemap.find_resource_by_destination_path '/2014/05/10/article2.html' }
@@ -12,12 +12,12 @@ describe 'Middleman::Blog::Similar::Algorithm::TagScored' do
   describe(:app) {
     describe(:similarity_algorithm) {
       subject { app.similarity_algorithm }
-      it { should be ::Middleman::Blog::Similar::Algorithm::TagScored  }
+      it { should be ::Middleman::Blog::Similar::Algorithm::WordFrequency  }
     }
   }
   describe(:algorithm) {
     subject { algorithm }
-    it { should be_a_kind_of ::Middleman::Blog::Similar::Algorithm::TagScored }
+    it { should be_a_kind_of ::Middleman::Blog::Similar::Algorithm::WordFrequency }
   }
   describe(:unigrams) {
     describe('length of keys') {
@@ -66,7 +66,7 @@ describe 'Middleman::Blog::Similar::Algorithm::TagScored' do
   describe(:article) {
     describe(:similarity_algorithm) {
       subject { algorithm }
-      it { should be_a_kind_of ::Middleman::Blog::Similar::Algorithm::TagScored }
+      it { should be_a_kind_of ::Middleman::Blog::Similar::Algorithm::WordFrequency }
     }
   }
 
