@@ -9,15 +9,16 @@ require "middleman-blog"
 require "middleman-blog/helpers"
 
 module SpecHelpers
+  include FileUtils
 
   def middleman_app fixture_path, &block
     tmp_dir     = File.expand_path("../../tmp", __FILE__)
     fixture_dir = File.expand_path("../../fixtures", __FILE__)
     fixture_tmp = File.join tmp_dir, "rspec"
     root_dir    = File.join fixture_tmp, fixture_path
-    FileUtils::rmtree fixture_tmp
-    FileUtils::mkdir_p tmp_dir
-    FileUtils::cp_r fixture_dir, fixture_tmp
+    rmtree fixture_tmp
+    mkdir_p tmp_dir
+    cp_r fixture_dir, fixture_tmp
     ENV["MM_SOURCE"] = 'source'
     ENV["MM_ROOT"] = root_dir
     initialize_commands = @initialize_commands || []
