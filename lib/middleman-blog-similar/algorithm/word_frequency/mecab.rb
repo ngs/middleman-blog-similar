@@ -12,7 +12,9 @@ class Middleman::Blog::Similar::Algorithm::WordFrequency::Mecab < ::Middleman::B
       f.close_write
       while line = f.gets
         word, pos = line.split(/[\t\s]+/)
-        res << word if pos && pos.start_with?('名詞')
+        next unless pos
+        pos = pos.split(',')
+        res << word if pos[0] == '名詞' && %w{一般 固有名詞}.include?(pos[1])
       end
     }
     res
