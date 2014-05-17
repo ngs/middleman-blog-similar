@@ -30,12 +30,11 @@ Configuration
 
 ```ruby
 gem 'middleman-blog-similar'
-gem 'levenshtein-ffi', :require => 'levenshtein'
 #
-# or if you prefer other algorithm:
+# if you have preferred other algorithm:
 #
-# levenshtein without ffi:
-#   gem 'levenshtein'
+# levenshtein
+#   gem 'levenshtein-ffi', :require => 'levenshtein'
 #
 # damerau levenshtein:
 #   gem 'damerau-levenshtein'
@@ -44,8 +43,17 @@ gem 'levenshtein-ffi', :require => 'levenshtein'
 ### `config.rb`
 
 ```ruby
+# Word frequency sort:
+activate :similar # , :algorithm => :word_frequency by default.
+
+# Use TreeTagger
+activate :similar, :algorithm => :'word_frequency/tree_tagger'
+
+# Use MeCab
+activate :similar, :algorithm => :'word_frequency/mecab'
+
 # Levenshtein distance function:
-activate :similar # , :algorithm => :levenshtein by default.
+activate :similar, :algorithm => :levenshtein
 
 # Damerau–Levenshtein distance function:
 activate :similar, :algorithm => :damerau_levenshtein
@@ -53,21 +61,55 @@ activate :similar, :algorithm => :damerau_levenshtein
 
 This library supports [levenshtein-ffi], [levenshtein] and [damerau-levenshtein].
 
-## Custom algorithm
+## Morphological Analysis
 
-You can use custom algorithm with implementing modules like this:
+### [MeCab]
+
+You need to install `mecab` command in your `PATH`.
+
+#### Mac OS X with Homebrew
+
+```bash
+brew install mecab mecab-ipadic
+```
+
+### [TreeTagger]
+
+You need to install [TreeTagger] and export path to the tagger script to `TREETAGGER_COMMAND` environment variable.
+
+```bash
+# Mac OS X
+curl -#o tree-tagger-MacOSX-3.2-intel.tar.gz http://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/data/tree-tagger-MacOSX-3.2-intel.tar.gz
+# or Linux
+curl -#o tree-tagger-linux-3.2.tar.gz http://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/data/tree-tagger-linux-3.2.tar.gz
+# Your language parameter file.
+curl -#o english-par-linux-3.2.bin.gz http://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/data/english-par-linux-3.2.bin.gz
+# Tagger scripts
+curl -#o tagger-scripts.tar.gz http://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/data/tagger-scripts.tar.gz
+# Install script
+curl -#o install-tagger.sh http://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/data/install-tagger.sh
+# Install tagger
+sh install-tagger.sh
+# Append export variable
+echo "export TREETAGGER_COMMAND=\"$(pwd)/cmd/tree-tagger-english\"" >> ~/.bash_profile
+```
+
+## Customizing
+
+You can use custom algorithm and morphological analyser with implementing modules like this:
 
 ```ruby
-module Middleman
-  module Blog
-    module Similar
-      module Algorithm
-        class MyFastDistance < Algorithm
-          def similar_articles(articles)
-            # Do stuff and return scores
-          end
-        end
-      end
+class Middleman::Blog::Similar::Algorithm::MyFastDistance < ::Middleman::Blog::Similar::Algorithm
+  def similar_articles
+    # Do stuff and return scores
+  end
+end
+```
+
+```ruby
+class Middleman::Blog::Similar::Algorithm::WordFrequency::SuperClever < ::Middleman::Blog::Similar::Algorithm
+    def words
+      # Do stuff and return words
     end
   end
 end
@@ -103,3 +145,5 @@ Copyright (c) 2014 [Atsushi Nagase]. MIT Licensed, see [LICENSE] for details.
 [levenshtein-ffi]: https://github.com/dbalatero/levenshtein-ffi
 [levenshtein]: https://github.com/schuyler/levenshtein
 [damerau-levenshtein]: https://github.com/GlobalNamesArchitecture/damerau-levenshtein
+[TreeTagger]: http://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/
+[MeCab]: http://mecab.googlecode.com/svn/trunk/mecab/doc/index.html
