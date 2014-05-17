@@ -23,7 +23,7 @@ describe 'Middleman::Blog::Similar::Algorithm::WordFrequency::TreeTagger' do
     describe(:output) {
       if ENV['TREETAGGER_COMMAND']
         subject { algorithm.tags }
-        it { should eq ["fox", "quick", "dog", "brown", "the", "jump", "lazi", "over", "articl", "2"] }
+        it { should eq ["quick", "fox", "dog", "brown", "lazi", "articl"] }
       else
         pending "ENV['TREETAGGER_COMMAND'] not set."
       end

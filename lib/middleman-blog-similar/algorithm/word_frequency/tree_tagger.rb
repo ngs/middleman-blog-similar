@@ -10,7 +10,9 @@ class Middleman::Blog::Similar::Algorithm::WordFrequency::TreeTagger < ::Middlem
       f.puts article.title
       f.close_write
       while line = f.gets
-        res << line.split(/\s+/)[0]
+        word, pos = line.split(/\s+/)
+        # http://courses.washington.edu/hypertxt/csar-v02/penntable.html
+        res << word if %w{NN JJ NP}.include? pos[0..2]
       end
     }
     res
