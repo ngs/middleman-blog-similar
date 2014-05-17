@@ -36,7 +36,6 @@ gem 'damerau-levenshtein'
 # morphological analyzers
 gem 'engtagger'
 gem 'okura'
-gem 'treetagger-ruby'
 gem 'myaso', '~> 0.4.0.pre2'
 
 if RUBY_VERSION >= '1.9.3'

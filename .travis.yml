@@ -11,8 +11,7 @@ matrix:
 env:
   global:
     - TAGGER_DIR=$TRAVIS_BUILD_DIR/tagger
-    - TREETAGGER_BINARY=$TAGGER_DIR/bin/tree-tagger
-    - TREETAGGER_MODEL=$TAGGER_DIR/lib/english.par
+    - TREETAGGER_COMMAND=$TAGGER_DIR/cmd/tree-tagger-english
     - TEST=true
 before_install:
    - sudo apt-get -yV install naist-jdic-utf8
@@ -26,6 +25,5 @@ before_install:
    - curl --progress-bar -o $TAGGER_DIR/tagger-scripts.tar.gz http://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/data/tagger-scripts.tar.gz
    - curl --progress-bar -o $TAGGER_DIR/install-tagger.sh http://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/data/install-tagger.sh
    - curl --progress-bar -o $TAGGER_DIR/english-par-linux-3.2.bin.gz http://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/data/english-par-linux-3.2.bin.gz
-   - curl --progress-bar -o $TAGGER_DIR/english-chunker-par-linux-3.2.bin.gz http://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/data/english-chunker-par-linux-3.2.bin.gz
    - cd $TAGGER_DIR && sh install-tagger.sh && cd -
 script: "bundle exec rake test"
