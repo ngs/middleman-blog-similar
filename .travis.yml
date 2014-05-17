@@ -14,12 +14,8 @@ env:
     - TREETAGGER_COMMAND=$TAGGER_DIR/cmd/tree-tagger-english
     - TEST=true
 before_install:
-   - sudo apt-get -yV install naist-jdic-utf8
    - sudo apt-get -yV install mecab
-   - sudo apt-get -yV install mecab-utils
-   - sudo apt-get -yV install mecab-naist-jdic
-   - sudo apt-get -yV install libmecab-dev
-   - sudo apt-get -yV install libmecab-ruby
+   - sudo apt-get -yV install mecab-ipadic-utf8
    - mkdir $TAGGER_DIR
    - curl --progress-bar -o $TAGGER_DIR/tree-tagger-linux-3.2.tar.gz http://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/data/tree-tagger-linux-3.2.tar.gz
    - curl --progress-bar -o $TAGGER_DIR/tagger-scripts.tar.gz http://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/data/tagger-scripts.tar.gz

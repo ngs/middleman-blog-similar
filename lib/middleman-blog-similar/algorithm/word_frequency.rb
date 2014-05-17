@@ -39,7 +39,8 @@ class Middleman::Blog::Similar::Algorithm::WordFrequency < ::Middleman::Blog::Si
     suitable_words = unigrams.dup
     word_freq= {}
     words.each do|word|
-      word = word.downcase.stem
+      word.downcase!
+      word = word.stem if word =~ /^\w+$/
       word_freq[word] ||= 0
       word_freq[word] += 1
     end
