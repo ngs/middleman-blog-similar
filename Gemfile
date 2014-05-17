@@ -33,10 +33,12 @@ gem 'damerau-levenshtein'
 # gem 'gsl'
 # gem 'tf-idf-similarity'
 
-
+# morphological analyzers
 gem 'engtagger'
 gem 'okura'
 gem 'treetagger-ruby'
+gem 'myaso', '~> 0.4.0.pre2'
+
 if RUBY_VERSION >= '1.9.3'
   gem "codeclimate-test-reporter", :group => :test, :require => nil
 end

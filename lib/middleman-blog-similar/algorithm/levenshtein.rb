@@ -1,15 +1,7 @@
 require 'levenshtein'
 
-module Middleman
-  module Blog
-    module Similar
-      class Algorithm
-        class Levenshtein < Algorithm
-          def distance(a)
-            ::Levenshtein.distance(article.body, a.body)
-          end
-        end
-      end
-    end
+class Middleman::Blog::Similar::Algorithm::Levenshtein < ::Middleman::Blog::Similar::Algorithm
+  def distance(a)
+    ::Levenshtein.distance(article.body, a.body)
   end
 end

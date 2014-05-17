@@ -1,15 +1,7 @@
 require 'damerau-levenshtein'
 
-module Middleman
-  module Blog
-    module Similar
-      class Algorithm
-        class DamerauLevenshtein < Algorithm
-          def distance(a)
-            ::DamerauLevenshtein.distance article.body, a.body
-          end
-        end
-      end
-    end
+class Middleman::Blog::Similar::Algorithm::DamerauLevenshtein < ::Middleman::Blog::Similar::Algorithm
+  def distance(a)
+    ::DamerauLevenshtein.distance article.body, a.body
   end
 end
