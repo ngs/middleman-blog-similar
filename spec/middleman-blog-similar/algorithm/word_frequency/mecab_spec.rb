@@ -25,7 +25,7 @@ describe 'Middleman::Blog::Similar::Algorithm::WordFrequency::Mecab' do
     describe(:output) {
       if %x{which mecab}
         subject { algorithm.tags }
-        it { should eq ["fox","の","国家","さん","方","誰","私","坊ちゃん","立脚","西洋","矛盾","相違","発会","時分","昨日","講演","教師","拡張","悪口","尻","変","結果","開始","周旋","向","叫び","反駁","反抗","前","人間","ネルソン","よう","関係","なん","ため","それ","そう","院","この世","お話","隙","expect","articl","3"] }
+        it { should eq ["fox", "国家", "隙", "教師", "悪口", "尻", "坊ちゃん", "時分", "向", "叫び", "人間", "ネルソン", "この世", "西洋", "expect", "articl"] }
       else
         pending "mecab is not installed."
       end
