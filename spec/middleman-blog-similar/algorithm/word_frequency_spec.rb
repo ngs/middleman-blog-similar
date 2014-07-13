@@ -9,6 +9,7 @@ describe 'Middleman::Blog::Similar::Algorithm::WordFrequency' do
   }
   let(:article) { app.sitemap.find_resource_by_destination_path '/2014/05/10/article2.html' }
   let(:algorithm)  { article.similarity_algorithm }
+  let(:cache_id) { algorithm.cache_id }
   describe(:app) {
     describe(:similarity_algorithm) {
       subject { app.similarity_algorithm }
@@ -18,6 +19,21 @@ describe 'Middleman::Blog::Similar::Algorithm::WordFrequency' do
   describe(:algorithm) {
     subject { algorithm }
     it { should be_a_kind_of ::Middleman::Blog::Similar::Algorithm::WordFrequency }
+  }
+  describe(:db) {
+    describe('path') {
+      subject { algorithm.db_path }
+      it { should eq File.join File.expand_path('../../../../', __FILE__), 'tmp/rspec/test-app/tmp/similar.db' }
+    }
+    describe('exists') {
+      before { algorithm.db }
+      subject { File.exists? algorithm.db_path }
+      it { should be true }
+    }
+    describe(:cache_id) {
+      subject { cache_id }
+      it { should eq 1 }
+    }
   }
   describe(:unigrams) {
     describe('length of keys') {
