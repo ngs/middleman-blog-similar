@@ -91,7 +91,7 @@ curl -#o install-tagger.sh http://www.cis.uni-muenchen.de/~schmid/tools/TreeTagg
 # Install tagger
 sh install-tagger.sh
 # Append export variable
-echo "export TREETAGGER_COMMAND=\"$(pwd)/cmd/tree-tagger-english\"" >> ~/.bash_profile
+echo "export TREETAGGER_COMMAND='`pwd`/cmd/tree-tagger-english'" >> ~/.bash_profile
 ```
 
 ## Customizing
