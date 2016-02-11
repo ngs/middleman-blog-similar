@@ -7,6 +7,7 @@ module Middleman
     class SimilarExtension < ::Middleman::Extension
 
       option :algorithm, :word_frequency, 'Similar lookup algorithm'
+      option :cache, true, 'Cache distance calc in memory'
 
       self.defined_helpers = [ Middleman::Blog::Similar::Helpers ]
 
@@ -20,6 +21,7 @@ module Middleman
           algorithm.split('/').each do|n|
             ns = ns.const_get n.camelize
           end
+          ns.cache = options[:cache]
           app.set :similarity_algorithm, ns
         rescue LoadError => e
           app.logger.error "Requested similar algorithm '#{algorithm}' not found."

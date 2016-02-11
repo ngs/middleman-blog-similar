@@ -61,6 +61,16 @@ activate :similar, :algorithm => :damerau_levenshtein
 
 This library supports [levenshtein-ffi], [levenshtein] and [damerau-levenshtein].
 
+#### caching
+
+enable caching with
+
+```ruby
+# any algorithm
+activate :similar, :algorithm => :levenshtein, :cache => true
+```
+
+
 ## Morphological Analysis
 
 ### [MeCab]
