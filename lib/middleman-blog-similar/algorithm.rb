@@ -12,7 +12,7 @@ class Middleman::Blog::Similar::Algorithm
     @similar_articles ||= articles
       .reject{|a| a == article || a.data.published == false}
       .map do |a|
-        key = [a.url, article.url].sort.join('-')
+        key = [a.url, article.url].join('-')
         if !@@should_cache || !@@cache[key].present?
           @@cache[key] = [distance(a), a]
         end
