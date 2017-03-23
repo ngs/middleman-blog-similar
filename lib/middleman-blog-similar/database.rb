@@ -1,40 +1,13 @@
 require 'sqlite3'
 require 'active_record'
+require 'middleman-blog-similar/models/article'
+require 'middleman-blog-similar/models/tag'
+require 'middleman-blog-similar/models/tagging'
+require 'middleman-blog-similar/models/migration'
 
 module Middleman
   module Blog
     module Similar
-      class Article < ActiveRecord::Base
-        has_and_belongs_to_many :tags
-        def similar_article_page_ids
-          return self.class.none if tags.empty?
-          # http://stackoverflow.com/a/22472153
-          res = ActiveRecord::Base.connection.select_all "
-            SELECT rtr.article_id FROM articles_tags AS rtr
-              INNER JOIN articles_tags rtr2
-                ON (rtr2.tag_id = rtr.tag_id AND rtr2.article_id = #{id})
-              LEFT JOIN
-                (SELECT * FROM articles_tags WHERE article_id = #{id}) AS r
-                ON rtr.tag_id = r.tag_id
-              LEFT JOIN articles a ON a.id = rtr.article_id
-              WHERE rtr.article_id != #{id}
-              GROUP BY rtr.article_id
-              HAVING COUNT(*) > 0
-              ORDER BY COUNT(*) DESC, a.page_id DESC"
-          ids = res.to_hash.map { |h| h['article_id'] }
-          page_id_map = {}
-          articles = self.class.where(id: ids).select(:id, :page_id)
-          articles.each do |a|
-            page_id_map[a.id] = a.page_id
-          end
-          ids.map { |id| page_id_map[id] }
-        end
-      end
-
-      class Tag < ActiveRecord::Base
-        has_and_belongs_to_many :articles
-      end
-
       class Database
         attr_reader :tagger
         def initialize(path, tagger)
@@ -42,25 +15,7 @@ module Middleman
             adapter: 'sqlite3',
             database: path
           )
-          ActiveRecord::Schema.define do
-            unless ActiveRecord::Base.connection.data_source_exists? 'articles'
-              create_table :articles do |table|
-                table.column :page_id, :string, index: true, unique: true
-                table.column :digest, :string, index: true
-              end
-            end
-
-            unless ActiveRecord::Base.connection.data_source_exists? 'tags'
-              create_table :tags do |table|
-                table.column :name, :string, index: true, unique: true
-              end
-            end
-
-            unless ActiveRecord::Base.connection.data_source_exists? 'articles_tags'
-              create_join_table :articles, :tags
-            end
-          end
-
+          Migration.apply
           @tagger = tagger
           @id_map = {}
         end

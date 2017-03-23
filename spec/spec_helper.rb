@@ -51,8 +51,8 @@ RSpec.configure do |config|
   config.include SpecHelpers
 end
 
-require 'middleman-blog-similar'
 require 'middleman-blog-similar/extension'
+require 'middleman-blog-similar'
 
 class String
   def unindent
