@@ -1,28 +1,39 @@
 require 'middleman-blog-similar/blog_article_extensions'
 require 'middleman-blog-similar/helpers'
-require 'middleman-blog-similar/algorithm'
+require 'middleman-blog-similar/resource_list_manipulator'
+require 'middleman-blog-similar/database'
 
 module Middleman
   module Blog
     class SimilarExtension < ::Middleman::Extension
 
-      option :algorithm, :word_frequency, 'Similar lookup algorithm'
+      option :tagger, :tags, 'Article tagger'
+      option :blog_controller, nil, 'Blog Controller'
+      option :db, '.similar.db', 'SQLite3 Database'
 
       self.defined_helpers = [ Middleman::Blog::Similar::Helpers ]
 
       def after_configuration
+        raise 'Blog Controller is not set' if options.blog_controller.nil?
         require 'middleman-blog/blog_article'
         ::Middleman::Sitemap::Resource.send :include, Middleman::Blog::Similar::BlogArticleExtensions
-        algorithm = options[:algorithm].to_s
+        @tagger = load_tagger options.tagger
+        @db = Middleman::Blog::Similar::Database.new File.expand_path(options.db, app.root), @tagger
+        @resource_list_manipulator = Middleman::Blog::Similar::ResourceListManipulator.new app, options.blog_controller, @db
+        @app.sitemap.register_resource_list_manipulator :blog_similar, @resource_list_manipulator
+        @app.set :similarity_extension, self
+      end
+
+      def load_tagger(tagger)
         begin
-          require "middleman-blog-similar/algorithm/#{algorithm}"
-          ns = ::Middleman::Blog::Similar::Algorithm
-          algorithm.split('/').each do|n|
+          require "middleman-blog-similar/tagger/#{tagger}"
+          ns = ::Middleman::Blog::Similar::Tagger
+          tagger.to_s.split('/').each do|n|
             ns = ns.const_get n.camelize
           end
-          app.set :similarity_algorithm, ns
+          ns.new
         rescue LoadError => e
-          app.logger.error "Requested similar algorithm '#{algorithm}' not found."
+          app.logger.error "Requested similar tagger '#{tagger}' not found."
           raise e
         end
       end
