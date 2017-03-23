@@ -1,6 +1,7 @@
 AllCops:
   Exclude:
     - .gems/**/*
+    - tmp/**/*
 Metrics/LineLength:
     Enabled: false
 Style/Documentation:

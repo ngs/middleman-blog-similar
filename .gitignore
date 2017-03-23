@@ -16,3 +16,4 @@ tmp
 Makefile
 .mm-pid-*
 *.gem
+similar.db

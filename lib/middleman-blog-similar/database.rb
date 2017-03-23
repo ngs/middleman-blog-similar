@@ -49,7 +49,7 @@ module Middleman
           digest = ::Digest::SHA1.file(source_file).hexdigest
           result = db.execute('SELECT `digest` FROM `articles` WHERE `id` = ?', page_id)
           return page_id if result.any? && result[0] == digest
-          tags = @tagger.execute article
+          tags = @tagger.execute(article).map(&:downcase)
           db.execute('INSERT OR IGNORE INTO `articles`(`id`) VALUES(?)', page_id)
           db.execute('UPDATE `articles` SET `digest` = ? WHERE `id` = ?', digest, page_id)
           return page_id if tags.empty?
@@ -57,7 +57,7 @@ module Middleman
           db.execute("DELETE FROM `article_tags` WHERE `article_id` = '#{page_id}' AND `tag_name` NOT IN ('#{tags.join("', '")}')")
           db.execute("INSERT OR IGNORE INTO `tags`(`name`) VALUES('#{tags.join("'), ('")}')")
           tags.each do |tag|
-            db.execute('INSERT OR IGNORE INTO `article_tags`(`article_id`, `tag_name`) VALUES(?, ?)', page_id, tag)
+            db.execute('INSERT OR IGNORE INTO `article_tags`(`article_id`, `tag_name`) VALUES(?, ?)', page_id, tag.downcase)
           end
           page_id
         end
