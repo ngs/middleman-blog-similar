@@ -1,4 +1,4 @@
 require 'spec_helper'
 
-describe "Middleman::Blog::BlogArticle" do
+describe 'Middleman::Blog::BlogArticle' do
 end

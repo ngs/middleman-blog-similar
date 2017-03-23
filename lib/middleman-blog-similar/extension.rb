@@ -6,12 +6,11 @@ require 'middleman-blog-similar/database'
 module Middleman
   module Blog
     class SimilarExtension < ::Middleman::Extension
-
       option :tagger, :tags, 'Article tagger'
       option :blog_controller, nil, 'Blog Controller'
       option :db, '.similar.db', 'SQLite3 Database'
 
-      self.defined_helpers = [ Middleman::Blog::Similar::Helpers ]
+      self.defined_helpers = [Middleman::Blog::Similar::Helpers]
 
       def after_configuration
         raise 'Blog Controller is not set' if options.blog_controller.nil?
@@ -25,19 +24,16 @@ module Middleman
       end
 
       def load_tagger(tagger)
-        begin
-          require "middleman-blog-similar/tagger/#{tagger}"
-          ns = ::Middleman::Blog::Similar::Tagger
-          tagger.to_s.split('/').each do|n|
-            ns = ns.const_get n.camelize
-          end
-          ns.new
-        rescue LoadError => e
-          app.logger.error "Requested similar tagger '#{tagger}' not found."
-          raise e
+        require "middleman-blog-similar/tagger/#{tagger}"
+        ns = ::Middleman::Blog::Similar::Tagger
+        tagger.to_s.split('/').each do |n|
+          ns = ns.const_get n.camelize
         end
+        ns.new
+      rescue LoadError => e
+        app.logger.error "Requested similar tagger '#{tagger}' not found."
+        raise e
       end
-
     end
   end
 end

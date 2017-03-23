@@ -30,19 +30,17 @@ module Middleman
           @db.transaction do |db|
             ids = []
             resources.each do |res|
-              if res.is_a?(Middleman::Blog::BlogArticle)
-                execute_article db, res
-                ids << res.page_id
-                @id_map[res.page_id.to_s] = res
-              end
+              next unless res.is_a?(Middleman::Blog::BlogArticle)
+              execute_article db, res
+              ids << res.page_id
+              @id_map[res.page_id.to_s] = res
             end
             unless ids.empty?
-              joined_ids = "'#{ids.join(%q{','})}'"
+              joined_ids = "'#{ids.join("','")}'"
               db.execute("DELETE FROM `articles` WHERE `id` NOT IN (#{joined_ids})")
               db.execute("DELETE FROM `article_tags` WHERE `article_id` NOT IN (#{joined_ids})")
             end
           end
-          binding.pry
         end
 
         def execute_article(db, article)
@@ -55,11 +53,11 @@ module Middleman
           db.execute('INSERT OR IGNORE INTO `articles`(`id`) VALUES(?)', page_id)
           db.execute('UPDATE `articles` SET `digest` = ? WHERE `id` = ?', digest, page_id)
           return page_id if tags.empty?
-          # FIXME escaping
-          db.execute("DELETE FROM `article_tags` WHERE `article_id` = '#{page_id}' AND `tag_name` NOT IN ('#{tags.join(%q(', '))}')")
-          db.execute("INSERT OR IGNORE INTO `tags`(`name`) VALUES('#{tags.join(%q{'), ('})}')")
+          # FIXME: escaping
+          db.execute("DELETE FROM `article_tags` WHERE `article_id` = '#{page_id}' AND `tag_name` NOT IN ('#{tags.join("', '")}')")
+          db.execute("INSERT OR IGNORE INTO `tags`(`name`) VALUES('#{tags.join("'), ('")}')")
           tags.each do |tag|
-            db.execute('INSERT OR IGNORE INTO `article_tags`(`article_id`, `tag_name`) VALUES(?, ?)', page_id,  tag)
+            db.execute('INSERT OR IGNORE INTO `article_tags`(`article_id`, `tag_name`) VALUES(?, ?)', page_id, tag)
           end
           page_id
         end

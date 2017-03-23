@@ -1,0 +1,32 @@
+AllCops:
+  Exclude:
+    - .gems/**/*
+Metrics/LineLength:
+    Enabled: false
+Style/Documentation:
+    Enabled: false
+Rails/HasAndBelongsToMany:
+    Enabled: false
+Metrics/AbcSize:
+    Enabled: false
+MethodLength:
+    Max: 50
+CyclomaticComplexity:
+    Max: 25
+PerceivedComplexity:
+    Max: 20
+Style/RescueModifier:
+    Enabled: false
+Style/PredicateName:
+    Enabled: false
+Metrics/ClassLength:
+    Enabled: false
+GuardClause:
+    MinBodyLength: 3
+CaseIndentation:
+    IndentOneStep: true
+NumericLiterals:
+  MinDigits: 7
+FileName:
+  Exclude:
+    - lib/middleman-blog-similar.rb
