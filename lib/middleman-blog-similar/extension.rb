@@ -15,7 +15,9 @@ module Middleman
         require 'middleman-blog/blog_article'
         ::Middleman::Sitemap::Resource.send :include, Middleman::Blog::Similar::BlogArticleExtensions
         @tagger = load_tagger options.tagger
-        @db = Middleman::Blog::Similar::Database.new File.expand_path(options.db, app.root), @tagger
+        db_path = options.db
+        db_path = File.expand_path(options.db, app.root) if db_path != ':memory:'
+        @db = Middleman::Blog::Similar::Database.new db_path, @tagger
         @resource_list_manipulator = Middleman::Blog::Similar::ResourceListManipulator.new app, @db
         @app.sitemap.register_resource_list_manipulator :blog_similar, @resource_list_manipulator
       end

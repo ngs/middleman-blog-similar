@@ -8,18 +8,21 @@ module Middleman
         has_and_belongs_to_many :tags
         def similar_article_page_ids
           return self.class.none if tags.empty?
+          # http://stackoverflow.com/a/22472153
           res = ActiveRecord::Base.connection.select_all "
             SELECT rtr.article_id FROM articles_tags AS rtr
+              INNER JOIN articles_tags rtr2
+                ON (rtr2.tag_id = rtr.tag_id AND rtr2.article_id = #{id})
               LEFT JOIN
                 (SELECT * FROM articles_tags WHERE article_id = #{id}) AS r
-              ON rtr.tag_id = r.tag_id
-              WHERE rtr.article_id <> #{id}
+                ON rtr.tag_id = r.tag_id
+              WHERE rtr.article_id != #{id}
               GROUP BY rtr.article_id
               HAVING COUNT(*) > 0
               ORDER BY COUNT(*) DESC, rtr.article_id"
           ids = res.to_hash.map { |h| h['article_id'] }
           page_id_map = {}
-          articles = self.class.where(id: ids)
+          articles = self.class.where(id: ids).select(:id, :page_id)
           articles.each do |a|
             page_id_map[a.id] = a.page_id
           end
@@ -53,10 +56,7 @@ module Middleman
             end
 
             unless ActiveRecord::Base.connection.data_source_exists? 'articles_tags'
-              create_table :articles_tags do |table|
-                table.references :article, foreign_key: true
-                table.references :tag, foreign_key: true
-              end
+              create_join_table :articles, :tags
             end
           end
 
