@@ -18,7 +18,6 @@ module Middleman
         @db = Middleman::Blog::Similar::Database.new File.expand_path(options.db, app.root), @tagger
         @resource_list_manipulator = Middleman::Blog::Similar::ResourceListManipulator.new app, @db
         @app.sitemap.register_resource_list_manipulator :blog_similar, @resource_list_manipulator
-        @app.set :similarity_extension, self
       end
 
       def load_tagger(tagger)
