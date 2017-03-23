@@ -1,3 +1,13 @@
+require 'simplecov'
+SimpleCov.start do
+  add_filter '/features/'
+end
+
+if ENV['COVERALLS_REPO_TOKEN']
+  require 'coveralls'
+  Coveralls.wear!
+end
+
 ENV['TEST'] = 'true'
 ENV['AUTOLOAD_SPROCKETS'] = 'false'
 

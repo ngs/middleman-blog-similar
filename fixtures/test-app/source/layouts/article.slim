@@ -2,7 +2,7 @@ html
   head
     meta charset="utf-8"
     title= current_article.title
-  body
+  body data-similar-article-count=similar_articles.count
     .container
       h1= current_article.title
       p.tags= current_article.tags.join ', '

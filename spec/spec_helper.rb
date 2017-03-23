@@ -3,9 +3,21 @@ PROJECT_ROOT_PATH = File.dirname(File.dirname(__FILE__))
 require 'rubygems'
 $LOAD_PATH.unshift File.join(PROJECT_ROOT_PATH, 'lib')
 require 'rspec'
+require 'rspec/collection_matchers'
+require 'rspec/its'
 require 'middleman-core'
 require 'middleman-blog'
 require 'middleman-blog/helpers'
+
+require 'simplecov'
+
+SimpleCov.root(File.expand_path(File.dirname(__FILE__) + '/..'))
+SimpleCov.start
+
+if ENV['COVERALLS_REPO_TOKEN']
+  require 'coveralls'
+  Coveralls.wear!
+end
 
 module SpecHelpers
   include FileUtils
@@ -27,7 +39,7 @@ module SpecHelpers
       set :show_exceptions, false
       activate :blog
     }
-    Middleman::Application.server.inst do
+    ::Middleman::Application.new do
       initialize_commands.each do |p|
         instance_exec(&p)
       end
@@ -38,13 +50,9 @@ end
 RSpec.configure do |config|
   config.include SpecHelpers
 end
+
 require 'middleman-blog-similar'
 require 'middleman-blog-similar/extension'
-
-if ENV['CODECLIMATE_REPO_TOKEN']
-  CodeClimate::TestReporter.start
-  require 'codeclimate-test-reporter'
-end
 
 class String
   def unindent
