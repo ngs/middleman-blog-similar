@@ -7,18 +7,16 @@ module Middleman
   module Blog
     class SimilarExtension < ::Middleman::Extension
       option :tagger, :tags, 'Article tagger'
-      option :blog_controller, nil, 'Blog Controller'
       option :db, '.similar.db', 'SQLite3 Database'
 
       self.defined_helpers = [Middleman::Blog::Similar::Helpers]
 
       def after_configuration
-        raise 'Blog Controller is not set' if options.blog_controller.nil?
         require 'middleman-blog/blog_article'
         ::Middleman::Sitemap::Resource.send :include, Middleman::Blog::Similar::BlogArticleExtensions
         @tagger = load_tagger options.tagger
         @db = Middleman::Blog::Similar::Database.new File.expand_path(options.db, app.root), @tagger
-        @resource_list_manipulator = Middleman::Blog::Similar::ResourceListManipulator.new app, options.blog_controller, @db
+        @resource_list_manipulator = Middleman::Blog::Similar::ResourceListManipulator.new app, @db
         @app.sitemap.register_resource_list_manipulator :blog_similar, @resource_list_manipulator
         @app.set :similarity_extension, self
       end

@@ -3,10 +3,9 @@ module Middleman
     module Similar
       class ResourceListManipulator
         attr_reader :article, :app, :db
-        def initialize(app, blog_controller, db)
+        def initialize(app, db)
           @app = app
           @db = db
-          @blog_controller = blog_controller
         end
 
         def manipulate_resource_list(resources)

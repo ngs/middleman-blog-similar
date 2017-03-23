@@ -4,10 +4,10 @@ Feature: Default
     Given a fixture app "test-app"
     And a file named "config.rb" with:
       """
-      blog_controller = activate :blog do|blog|
+      activate :blog do|blog|
         blog.layout = "article"
       end
-      activate :similar, blog_controller: blog_controller
+      activate :similar
       """
     Given the Server is running at "test-app"
     When I go to "/2014/05/08/article0.html"
