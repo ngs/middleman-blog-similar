@@ -17,8 +17,8 @@ describe 'Middleman::Blog::SimilarExtension' do
     subject { resource.similar_articles.map { |a| [a.page_id].concat a.tags } }
     it { is_expected.to have(4).items }
     its([0]) { is_expected.to eq %w(2014-05-14-article6 dog Brown cat) }
-    its([1]) { is_expected.to eq %w(2014-05-09-article1 dog cat) }
-    its([2]) { is_expected.to eq %w(2014-05-12-article4 dog cat fox) }
+    its([1]) { is_expected.to eq %w(2014-05-12-article4 dog cat fox) }
+    its([2]) { is_expected.to eq %w(2014-05-09-article1 dog cat) }
     its([3]) { is_expected.to eq %w(2014-05-13-article5 dog) }
   end
 end

@@ -16,10 +16,11 @@ module Middleman
               LEFT JOIN
                 (SELECT * FROM articles_tags WHERE article_id = #{id}) AS r
                 ON rtr.tag_id = r.tag_id
+              LEFT JOIN articles a ON a.id = rtr.article_id
               WHERE rtr.article_id != #{id}
               GROUP BY rtr.article_id
               HAVING COUNT(*) > 0
-              ORDER BY COUNT(*) DESC, rtr.article_id"
+              ORDER BY COUNT(*) DESC, a.page_id DESC"
           ids = res.to_hash.map { |h| h['article_id'] }
           page_id_map = {}
           articles = self.class.where(id: ids).select(:id, :page_id)
