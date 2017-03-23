@@ -15,6 +15,7 @@ Gem::Specification.new do |s|
   s.files = `git ls-files -z`.split("\0")
   s.test_files = `git ls-files -z -- {fixtures,features,spec}/*`.split("\0")
   s.require_paths = ['lib']
+  s.required_ruby_version = '>= 2.2.0'
   s.add_dependency('middleman-core', ['>= 4.0.0'])
   s.add_dependency('middleman-blog', ['>= 4.0.0'])
   s.add_dependency('sqlite3', ['~> 1.3'])

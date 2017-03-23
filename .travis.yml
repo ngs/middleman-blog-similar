@@ -1,13 +1,8 @@
 rvm:
-  - 1.9.3
-  - 2.0.0
-  - 2.1.0
-  - jruby-19mode
+  - 2.2.6
+  - 2.3.2
+  - 2.4.1
 
-# Bug in jRuby w/ Rouge: https://github.com/jruby/jruby/issues/1392
-matrix:
-  allow_failures:
-    - rvm: jruby-19mode
 env:
   global:
     - TAGGER_DIR=$TRAVIS_BUILD_DIR/tagger

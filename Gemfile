@@ -26,7 +26,6 @@ gem 'redcarpet'
 gem 'rspec', '~> 3.0', require: false
 gem 'rubocop', require: false
 gem 'slim'
-gem 'yard',     '~> 0.8.0', require: false
+gem 'yard', '~> 0.8.0', require: false
 # gem 'gsl'
 # gem 'tf-idf-similarity'
-
