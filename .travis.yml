@@ -1,12 +1,16 @@
 rvm:
-  - 2.2.6
-  - 2.3.2
-  - 2.4.1
-
+- 2.2.6
+- 2.3.2
+- 2.4.1
 env:
   global:
-    - TEST=true
+  - TEST=true
 before_install:
-  # https://gist.github.com/ngs/0b5785020afca7701feab717c6a7603a
-  - curl -L https://git.io/vSUUX | bash
-script: "bundle exec rake test"
+- curl -L https://git.io/vSUUX | bash
+script: bundle exec rake test
+deploy:
+  provider: rubygems
+  api_key:
+    secure: PjIBKKWhCcamn3+X/H2bfDn8m0X6nGTEwZw1LpBbWSiXTxJeUlp1uFjwQ82e8yG6Fk3vLlrCZRks3eM3NIzv9V2l1QHQdivLsha/nBkIpnXB4bIRvJG1bhPVmgOSZQCDJjzgUWSlDljzwFjxJ1NOSYQzbPyvOtu+Ks7/p+BJzHI=
+  on:
+    tags: true
