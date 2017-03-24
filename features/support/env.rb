@@ -1,14 +1,24 @@
-PROJECT_ROOT_PATH = File.dirname(File.dirname(File.dirname(__FILE__)))
-ENV['TEST'] = 'true'
+require 'codeclimate-test-reporter'
+require 'coveralls'
+require 'simplecov'
 
-require 'rubygems'
-require 'spork'
-$LOAD_PATH.unshift File.join(PROJECT_ROOT_PATH, 'lib')
+SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
+  Coveralls::SimpleCov::Formatter,
+  SimpleCov::Formatter::HTMLFormatter,
+  CodeClimate::TestReporter::Formatter
+]
 
-Spork.prefork do
-  require "middleman-blog-similar"
+SimpleCov.start do
+  add_filter '/features/'
 end
 
-require "middleman-core"
-require "middleman-blog"
-require "middleman-core/step_definitions"
+ENV['COVERALLS_REPO_TOKEN'] && Coveralls.wear!
+
+ENV['TEST'] = 'true'
+ENV['AUTOLOAD_SPROCKETS'] = 'false'
+
+PROJECT_ROOT_PATH = File.dirname(File.dirname(File.dirname(__FILE__)))
+require 'middleman-core'
+require 'middleman-core/step_definitions'
+require 'middleman-blog'
+require File.join(PROJECT_ROOT_PATH, 'lib', 'middleman-blog-similar')

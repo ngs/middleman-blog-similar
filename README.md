@@ -1,9 +1,16 @@
-Middleman-Blog-Similar
+middleman-blog-similar
 ======================
+
+[![Gem Version](https://badge.fury.io/rb/middleman-blog-similar.png)][gem]
+[![Build Status](https://travis-ci.org/ngs/middleman-blog-similar.svg?branch=master)][travis]
+[![Dependency Status](https://gemnasium.com/ngs/middleman-blog-similar.png?travis)][gemnasium]
+[![Code Quality](https://codeclimate.com/github/ngs/middleman-blog-similar.png)][codeclimate]
+[![Coverage Status](https://coveralls.io/repos/github/ngs/middleman-blog-similar/badge.svg)][coveralls]
 
 `middleman-blog-similar` is an extension for [middleman-blog] that adds method to lookup similar article.
 
-### Usage
+Usage
+-----
 
 `Middleman::Blog::BlogArticle#similar_articles` returns an array of `Middleman::Blog::BlogArticle` instances.
 
@@ -30,109 +37,78 @@ Configuration
 
 ```ruby
 gem 'middleman-blog-similar'
-#
-# if you have preferred other algorithm:
-#
-# levenshtein
-#   gem 'levenshtein-ffi', :require => 'levenshtein'
-#
-# damerau levenshtein:
-#   gem 'damerau-levenshtein'
 ```
 
 ### `config.rb`
 
 ```ruby
-# Word frequency sort:
-activate :similar # , :algorithm => :word_frequency by default.
-
-# Use TreeTagger
-activate :similar, :algorithm => :'word_frequency/tree_tagger'
-
-# Use MeCab
-activate :similar, :algorithm => :'word_frequency/mecab'
-
-# Levenshtein distance function:
-activate :similar, :algorithm => :levenshtein
-
-# Damerau–Levenshtein distance function:
-activate :similar, :algorithm => :damerau_levenshtein
+activate :similar
 ```
 
-This library supports [levenshtein-ffi], [levenshtein] and [damerau-levenshtein].
+This extension finds similar articles using those are using tags by default.
 
-## Morphological Analysis
+#### Built-in Tagger
 
-### [MeCab]
-
-You need to install `mecab` command in your `PATH`.
-
-#### Mac OS X with Homebrew
-
-```bash
-brew install mecab mecab-ipadic
-```
-
-### [TreeTagger]
-
-You need to install [TreeTagger] and export path to the tagger script to `TREETAGGER_COMMAND` environment variable.
-
-```bash
-# Mac OS X
-curl -#o tree-tagger-MacOSX-3.2-intel.tar.gz http://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/data/tree-tagger-MacOSX-3.2-intel.tar.gz
-# or Linux
-curl -#o tree-tagger-linux-3.2.tar.gz http://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/data/tree-tagger-linux-3.2.tar.gz
-# Your language parameter file.
-curl -#o english-par-linux-3.2.bin.gz http://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/data/english-par-linux-3.2.bin.gz
-# Tagger scripts
-curl -#o tagger-scripts.tar.gz http://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/data/tagger-scripts.tar.gz
-# Install script
-curl -#o install-tagger.sh http://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/data/install-tagger.sh
-# Install tagger
-sh install-tagger.sh
-# Append export variable
-echo "export TREETAGGER_COMMAND=\"$(pwd)/cmd/tree-tagger-english\"" >> ~/.bash_profile
-```
-
-## Customizing
-
-You can use custom algorithm and morphological analyser with implementing modules like this:
+You can set taggers using `tagger:` option. [MeCab] and [EngTagger] adopters are built in this extension.
 
 ```ruby
-class Middleman::Blog::Similar::Algorithm::MyFastDistance < ::Middleman::Blog::Similar::Algorithm
-  def similar_articles
-    # Do stuff and return scores
-  end
-end
+# Find by tags (default)
+activate :similar, tagger: :tags
+
+# Using MeCab / Need to add `gem 'natto'` in Gemfile
+activate :similar, tagger: :mecab
+
+# Using EngTagger / Need to add `gem 'entagger'` in Gemfile
+activate :similar, tagger: :entagger
 ```
+
+#### Using Lambda
+
+You can use lambda as tagger
 
 ```ruby
-class Middleman::Blog::Similar::Algorithm::WordFrequency::SuperClever < ::Middleman::Blog::Similar::Algorithm
-    def words
-      # Do stuff and return words
-    end
-  end
-end
+# Resource is a Middleman::Blog::BlogArticle
+activate :similar, tagger: ->(resource) { [resource.data.category] }
 ```
 
-then in your `config.rb`
+#### Multiple Taggers
+
+You can configure multiple taggers both built-in and lambda taggers.
 
 ```ruby
-activate :similar, :algorithm => :my_fast_distance
+activate :similar, tagger: {
+  # key = tagger, value = weight
+  mecab: 1,
+  entagger: 1,
+  tags: 3,
+  # key = (ignored), value[0] = weight, value[1] = lambda
+  custom: [5, ->(resource) { resource.data.category ? [resource.data.category] : [] }]
+}
 ```
 
-Build & Dependency Status
--------------------------
+#### Database Location
 
-[![Gem Version](https://badge.fury.io/rb/middleman-blog-similar.png)][gem]
-[![Build Status](https://travis-ci.org/ngs/middleman-blog-similar.svg?branch=master)][travis]
-[![Dependency Status](https://gemnasium.com/ngs/middleman-blog-similar.png?travis)][gemnasium]
-[![Code Quality](https://codeclimate.com/github/ngs/middleman-blog-similar.png)][codeclimate]
+This extension uses [SQLite3] to calculate similarity between articles.
+
+Database location is `${PROJECT_ROOT}/.similar.db` by default.
+
+You can specify database location using `db:` option.
+
+```ruby
+# Expands to ${HOME}/similar.db
+activate :similar, db: '~/similar.db'
+
+# Expands to ${PROJECT_ROOT}/tmp/middleman-blog-similar.db
+activate :similar, db: 'tmp/middleman-blog-similar.db'
+
+# Stores in memory database
+activate :similar, db: ':memory:'
+```
 
 License
 -------
 
-Copyright (c) 2014 [Atsushi Nagase]. MIT Licensed, see [LICENSE] for details.
+Copyright (c) 2014-2017 [Atsushi Nagase]. MIT Licensed, see [LICENSE] for details.
 
 [middleman]: http://middlemanapp.com
 [middleman-blog]: https://github.com/middleman/middleman-blog
@@ -140,10 +116,9 @@ Copyright (c) 2014 [Atsushi Nagase]. MIT Licensed, see [LICENSE] for details.
 [travis]: http://travis-ci.org/ngs/middleman-blog-similar
 [gemnasium]: https://gemnasium.com/ngs/middleman-blog-similar
 [codeclimate]: https://codeclimate.com/github/ngs/middleman-blog-similar
-[LICENSE]: https://github.com/ngs/middleman-blog-similar/blob/master/LICENSE.md
-[Atsushi Nagase]: http://ngs.io/
-[levenshtein-ffi]: https://github.com/dbalatero/levenshtein-ffi
-[levenshtein]: https://github.com/schuyler/levenshtein
-[damerau-levenshtein]: https://github.com/GlobalNamesArchitecture/damerau-levenshtein
-[TreeTagger]: http://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/
-[MeCab]: http://mecab.googlecode.com/svn/trunk/mecab/doc/index.html
+[LICENSE]: LICENSE.md
+[Atsushi Nagase]: https://ngs.io
+[coveralls]: https://coveralls.io/github/ngs/middleman-blog-similar
+[MeCab]: http://taku910.github.io/mecab/
+[EngTagger]: https://github.com/yohasebe/engtagger
+[SQLite3]: https://www.sqlite.org/
