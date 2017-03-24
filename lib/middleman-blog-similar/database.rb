@@ -9,14 +9,14 @@ module Middleman
   module Blog
     module Similar
       class Database
-        attr_reader :tagger
-        def initialize(path, tagger)
+        attr_reader :taggers
+        def initialize(path, taggers)
           ActiveRecord::Base.establish_connection(
             adapter: 'sqlite3',
             database: path
           )
           Migration.apply
-          @tagger = tagger
+          @taggers = taggers
           @id_map = {}
         end
 
@@ -34,22 +34,26 @@ module Middleman
           end
         end
 
-        def execute_article(article)
-          source_file = article.source_file
-          page_id = article.page_id
+        def execute_article(resource)
+          source_file = resource.source_file
+          page_id = resource.page_id
           digest = ::Digest::SHA1.file(source_file).hexdigest
           return page_id if Article.exists?(digest: digest, page_id: page_id)
-          tags = @tagger.execute(article).map(&:downcase)
           article = Article.find_or_create_by(page_id: page_id)
-          article.update! digest: digest
-          return page_id if tags.empty?
-          # FIXME: escaping
-          article.tags = []
-          tags.each do |tag|
-            tag = Tag.find_or_create_by name: tag.downcase
-            article.tags << tag
+          new_tagging_ids = []
+          @taggers.each do |tagger|
+            tagger[1].call(resource).map(&:downcase).each do |tag_name|
+              tag = Tag.find_or_create_by name: tag_name
+              tagging = Tagging.find_or_create_by tag_id: tag.id, article_id: article.id
+              tagging.weight = tagger[0]
+              tagging.save!
+              new_tagging_ids << tagging.id
+            end
           end
-          article.save!
+          if new_tagging_ids.any?
+            article.taggings.where.not(id: new_tagging_ids).delete_all
+          end
+          article.update! digest: digest
           page_id
         end
 

@@ -3,7 +3,7 @@ module Middleman
     module Similar
       module Tagger
         class Tags
-          def execute(article)
+          def call(article)
             article.tags
           end
         end
