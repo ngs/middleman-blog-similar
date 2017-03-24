@@ -6,7 +6,7 @@ env:
   global:
   - TEST=true
 before_install:
-- curl -L https://git.io/vSUUX | bash
+- curl -L "https://dl.bintray.com/ngs/travis/mecab-with-ipa-dic.tar.gz" -o mecab.tgz && sudo tar xvfz mecab.tgz -C /usr && rm -f mecab.tgz
 script: bundle exec rake test
 deploy:
   provider: rubygems
