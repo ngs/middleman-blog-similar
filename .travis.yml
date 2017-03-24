@@ -7,6 +7,8 @@ env:
   - TEST=true
 before_install:
 - curl -L "https://dl.bintray.com/ngs/travis/mecab-with-ipa-dic.tar.gz" -o mecab.tgz && sudo tar xvfz mecab.tgz -C /usr && rm -f mecab.tgz
+after_succes:
+- bundle exec codeclimate-test-reporter
 script: bundle exec rake test
 deploy:
   provider: rubygems
