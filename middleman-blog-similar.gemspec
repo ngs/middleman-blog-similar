@@ -10,14 +10,17 @@ Gem::Specification.new do |s|
   s.email = ['a@ngs.io']
   s.homepage = 'https://github.com/ngs/middleman-blog-similar'
   s.summary = 'Similar article extension for middleman-blog'
-  s.description = 'Similar article extension for middleman-blog'
+  s.description = <<-EOF
+    Similar article extension for middleman-blog.
+    Finds similar articles using tags, part-of-speech or custom lambda.
+  EOF
   s.license = 'MIT'
   s.files = `git ls-files -z`.split("\0")
   s.test_files = `git ls-files -z -- {fixtures,features,spec}/*`.split("\0")
   s.require_paths = ['lib']
   s.required_ruby_version = '>= 2.2.0'
-  s.add_dependency('activerecord', ['>= 5.0.0'])
-  s.add_dependency('middleman-core', ['>= 4.0.0'])
-  s.add_dependency('middleman-blog', ['>= 4.0.0'])
-  s.add_dependency('sqlite3', ['~> 1.3'])
+  s.add_runtime_dependency 'activerecord', '~> 5.0', '>= 5.0.0'
+  s.add_runtime_dependency 'middleman-core', '~> 4.0', '>= 4.0.0'
+  s.add_runtime_dependency 'middleman-blog', '~> 4.0', '>= 4.0.0'
+  s.add_dependency 'sqlite3', '~> 1.3'
 end
