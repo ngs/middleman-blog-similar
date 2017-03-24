@@ -1,9 +1,11 @@
 require 'spec_helper'
 
 # rubocop:disable Metrics/BlockLength
-describe 'Middleman::Blog::SimilarExtension' do
+describe Middleman::Blog::SimilarExtension do
   before(:all) { @app = middleman_app('test-app') { activate :similar, db: ':memory:' } }
   let(:app) { @app }
+  let(:resource) { app.sitemap.resources.select { |res| res.page_id == page_id }.first }
+  let(:page_id) { '2014-05-08-article0' }
   describe 'activation' do
     subject { app.extensions }
     its([:similar]) { is_expected.not_to be_nil }
@@ -18,7 +20,6 @@ describe 'Middleman::Blog::SimilarExtension' do
     end
   end
   describe 'results' do
-    let(:resource) { app.sitemap.resources.select { |res| res.page_id == '2014-05-08-article0' }.first }
     subject { resource.similar_articles.map { |a| [a.page_id, a.data.category || '<none>'].concat a.tags } }
     it { is_expected.to have(4).items }
     its([0]) { is_expected.to eq %w(2014-05-14-article6 <none> dog Brown cat) }

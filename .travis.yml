@@ -5,17 +5,8 @@ rvm:
 
 env:
   global:
-    - TAGGER_DIR=$TRAVIS_BUILD_DIR/tagger
-    - TREETAGGER_COMMAND=$TAGGER_DIR/cmd/tree-tagger-english
     - TEST=true
 before_install:
-   - sudo apt-get -yV install mecab
-   - sudo apt-get -yV install mecab-ipadic-utf8
-   - mkdir $TAGGER_DIR
-   - curl --progress-bar -o $TAGGER_DIR/tree-tagger-linux-3.2.tar.gz http://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/data/tree-tagger-linux-3.2.tar.gz
-   - curl --progress-bar -o $TAGGER_DIR/tagger-scripts.tar.gz http://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/data/tagger-scripts.tar.gz
-   - curl --progress-bar -o $TAGGER_DIR/install-tagger.sh http://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/data/install-tagger.sh
-   - curl --progress-bar -o $TAGGER_DIR/english-par-linux-3.2-utf8.bin.gz http://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/data/english-par-linux-3.2-utf8.bin.gz
-   - curl --progress-bar -o $TAGGER_DIR/english-par-linux-3.2.bin.gz http://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/data/english-par-linux-3.2.bin.gz
-   - cd $TAGGER_DIR && sh install-tagger.sh && cd -
+  # https://gist.github.com/ngs/0b5785020afca7701feab717c6a7603a
+  - curl -L https://git.io/vSUUX | bash
 script: "bundle exec rake test"

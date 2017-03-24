@@ -1,6 +1,7 @@
 guard 'rspec', cmd: 'bundle exec rspec' do
   watch(%r{^spec/.*\.rb$})
   watch(%r{^lib/(.+)\.rb$}) { |m| ["spec/#{m[1]}_spec.rb"] + Dir["spec/#{m[1]}/*_spec.rb"] }
+  watch(%r{^lib/middleman-blog-similar/tagger/(.+)\.rb$}) { ['spec/middleman-blog-similar/tagger_spec.rb'] }
 end
 
 guard 'cucumber', cmd: 'bundle exec cucumber' do

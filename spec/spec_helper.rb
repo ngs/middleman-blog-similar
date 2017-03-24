@@ -53,6 +53,7 @@ end
 
 require 'middleman-blog-similar/extension'
 require 'middleman-blog-similar'
+Dir.glob(PROJECT_ROOT_PATH + '/lib/middleman-blog-similar/tagger/*') { |file| require file }
 
 class String
   def unindent
