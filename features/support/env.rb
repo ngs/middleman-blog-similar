@@ -1,12 +1,18 @@
+require 'codeclimate-test-reporter'
+require 'coveralls'
 require 'simplecov'
+
+SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
+  Coveralls::SimpleCov::Formatter,
+  SimpleCov::Formatter::HTMLFormatter,
+  CodeClimate::TestReporter::Formatter
+]
+
 SimpleCov.start do
   add_filter '/features/'
 end
 
-if ENV['COVERALLS_REPO_TOKEN']
-  require 'coveralls'
-  Coveralls.wear!
-end
+ENV['COVERALLS_REPO_TOKEN'] && Coveralls.wear!
 
 ENV['TEST'] = 'true'
 ENV['AUTOLOAD_SPROCKETS'] = 'false'

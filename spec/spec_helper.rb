@@ -9,15 +9,20 @@ require 'middleman-core'
 require 'middleman-blog'
 require 'middleman-blog/helpers'
 
+require 'codeclimate-test-reporter'
+require 'coveralls'
 require 'simplecov'
+
+SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
+  Coveralls::SimpleCov::Formatter,
+  SimpleCov::Formatter::HTMLFormatter,
+  CodeClimate::TestReporter::Formatter
+]
 
 SimpleCov.root(File.expand_path(File.dirname(__FILE__) + '/..'))
 SimpleCov.start
 
-if ENV['COVERALLS_REPO_TOKEN']
-  require 'coveralls'
-  Coveralls.wear!
-end
+ENV['COVERALLS_REPO_TOKEN'] && Coveralls.wear!
 
 module SpecHelpers
   include FileUtils

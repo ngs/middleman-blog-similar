@@ -6,6 +6,7 @@ gemspec
 gem 'aruba', '~> 0.7.4', require: false
 gem 'cane', platforms: [:mri_19, :mri_20], require: false
 gem 'capybara', '~> 2.5.0', require: false
+gem 'codeclimate-test-reporter', '~> 1.0', require: false
 gem 'coveralls', require: false
 gem 'cucumber', '~> 2.0', require: false
 gem 'engtagger'
