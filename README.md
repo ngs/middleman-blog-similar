@@ -86,6 +86,25 @@ activate :similar, tagger: {
 }
 ```
 
+#### Database Location
+
+This extension uses [SQLite3] to calculate similarity between articles.
+
+Database location is `${PROJECT_ROOT}/.similar.db` by default.
+
+You can specify database location using `db:` option.
+
+```ruby
+# Expands to ${HOME}/similar.db
+activate :similar, db: '~/similar.db'
+
+# Expands to ${PROJECT_ROOT}/tmp/middleman-blog-similar.db
+activate :similar, db: 'tmp/middleman-blog-similar.db'
+
+# Stores in memory database
+activate :similar, db: ':memory:'
+```
+
 License
 -------
 
@@ -102,3 +121,4 @@ Copyright (c) 2014-2017 [Atsushi Nagase]. MIT Licensed, see [LICENSE] for detail
 [coveralls]: https://coveralls.io/github/ngs/middleman-blog-similar
 [MeCab]: http://taku910.github.io/mecab/
 [EngTagger]: https://github.com/yohasebe/engtagger
+[SQLite3]: https://www.sqlite.org/
