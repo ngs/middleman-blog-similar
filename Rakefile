@@ -16,7 +16,7 @@ end
 
 require 'rake/clean'
 
-task test: %w(rubocop spec cucumber)
+task test: %w[rubocop spec cucumber]
 
 begin
   require 'cane/rake_task'
