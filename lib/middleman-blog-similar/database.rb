@@ -62,7 +62,7 @@ module Middleman
           return [] unless article
           article.similar_article_page_ids.map do |page_id|
             @id_map[page_id]
-          end
+          end.select(&:present?)
         end
       end
     end
