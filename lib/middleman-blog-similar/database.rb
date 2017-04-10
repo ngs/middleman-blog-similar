@@ -42,7 +42,9 @@ module Middleman
           article = Article.find_or_create_by(page_id: page_id)
           new_tagging_ids = []
           @taggers.each do |tagger|
-            tagger[1].call(resource).map(&:downcase).each do |tag_name|
+            tags = tagger[1].call resource
+            tags = [tags] unless tags.is_a?(Array)
+            tags.map(&:downcase).each do |tag_name|
               tag = Tag.find_or_create_by name: tag_name
               tagging = Tagging.find_or_create_by tag_id: tag.id, article_id: article.id
               tagging.weight = tagger[0]
