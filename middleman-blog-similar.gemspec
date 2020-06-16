@@ -22,6 +22,6 @@ Gem::Specification.new do |s|
   s.required_ruby_version = '>= 2.2.0'
   s.add_runtime_dependency 'activerecord', '~> 5.0', '>= 5.0.0'
   s.add_runtime_dependency 'middleman-core', '>= 4.0.0'
-  s.add_runtime_dependency 'middleman-blog', '>= 4.0.0'
+  s.add_runtime_dependency 'middleman-blog', '~> 4.0.0', '>= 4.0.0'
   s.add_dependency 'sqlite3', '~> 1.3'
 end
