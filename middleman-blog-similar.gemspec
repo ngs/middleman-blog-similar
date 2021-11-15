@@ -20,7 +20,7 @@ Gem::Specification.new do |s|
   s.test_files = `git ls-files -z -- {fixtures,features,spec}/*`.split("\0")
   s.require_paths = ['lib']
   s.required_ruby_version = '>= 2.2.0'
-  s.add_runtime_dependency 'activerecord', '~> 5.0', '>= 5.0.0'
+  s.add_runtime_dependency 'activerecord', '~> 6.1', '>= 6.1.0'
   s.add_runtime_dependency 'middleman-core', '~> 4.0', '>= 4.0.0'
   s.add_runtime_dependency 'middleman-blog', '~> 4.0', '>= 4.0.0'
   s.add_dependency 'sqlite3', '~> 1.3'
