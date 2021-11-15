@@ -19,7 +19,7 @@ module Middleman
               GROUP BY rtr.article_id
               HAVING COUNT(*) > 0
               ORDER BY COUNT(*) * rtr.weight DESC, a.page_id DESC"
-          ids = res.to_hash.map { |h| h['article_id'] }
+          ids = res.to_ary.map { |h| h['article_id'] }
           page_id_map = {}
           articles = self.class.where(id: ids).select(:id, :page_id)
           articles.each do |a|
